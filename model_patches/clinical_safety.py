@@ -57,6 +57,64 @@ DRUG_SAFETY_NOTES: dict[str, str] = {
         "model output must not be used as a standalone switch trigger and "
         "should require transfusion-medicine awareness."
     ),
+    "Panobinostat": (
+        "severe diarrhea, cardiac arrhythmia (QTc prolongation), and "
+        "thrombocytopenia; must be used with bortezomib + dex only in "
+        "≥2 prior lines; a false 'sensitive' call may push early use "
+        "without adequate cardiac monitoring."
+    ),
+    "Vorinostat": (
+        "pulmonary embolism and thrombocytopenia; GI toxicity (nausea, "
+        "diarrhea, dysgeusia) limits tolerability; the model must not "
+        "recommend HDAC inhibitor switch without ruling out overlapping "
+        "toxicity with concurrent PI or IMiD."
+    ),
+    "Romidepsin": (
+        "cardiac toxicity (QTc prolongation, T-wave changes) and severe "
+        "nausea/fatigue; primarily indicated in CTCL/PTCL, not standard "
+        "in MM — any 'sensitive' call must be flagged as off-label use "
+        "requiring IRB or compassionate-use protocol."
+    ),
+    "Venetoclax": (
+        "tumor lysis syndrome (TLS) risk especially in high-burden disease; "
+        "activity is strongly t(11;14)-dependent — a false 'sensitive' call "
+        "in non-t(11;14) MM may expose the patient to TLS without expected "
+        "benefit; BCL2 expression must be confirmed."
+    ),
+    "Dinaciclib": (
+        "myelosuppression (neutropenia, thrombocytopenia) and tumor lysis "
+        "syndrome; not FDA-approved — investigational CDK inhibitor with a "
+        "narrow therapeutic index; any model recommendation must be clearly "
+        "labeled as hypothesis-generating, not actionable."
+    ),
+    "Palbociclib": (
+        "neutropenia (grade 3/4 in >60% of patients), fatigue, and "
+        "potential for drug-drug interactions with CYP3A inhibitors; "
+        "CDK4/6 inhibition is not standard-of-care in MM — model output "
+        "must flag this as investigational and not override standard "
+        "PI/IMiD-based regimens."
+    ),
+    "Doxorubicin": (
+        "cumulative cardiotoxicity (lifetime dose limit ~450 mg/m²) and "
+        "myelosuppression; liposomal doxorubicin (PLD) has a different "
+        "toxicity profile — the model must distinguish between formulations; "
+        "a false 'sensitive' call in a patient near cumulative dose limit "
+        "risks irreversible cardiomyopathy."
+    ),
+    "Etoposide": (
+        "severe myelosuppression, secondary leukemia risk (therapy-related "
+        "AML/MDS), and mucositis; used only in high-dose salvage regimens "
+        "(e.g., VDT-PACE); the model must not recommend etoposide-containing "
+        "regimens without verifying that the patient is a transplant candidate "
+        "with adequate organ function."
+    ),
+    "Cyclophosphamide": (
+        "hemorrhagic cystitis, myelosuppression, and secondary malignancy "
+        "risk; a backbone of CyBorD but dose-dependent toxicity varies "
+        "widely between oral metronomic and IV pulse dosing; the model "
+        "must specify which dosing context its prediction applies to and "
+        "must not conflate oral and IV regimens."
+    ),
 }
 
 
