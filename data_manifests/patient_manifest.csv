@@ -1,0 +1,28 @@
+patient_id,split,treatment_line,sample_site,ancestry,sex,age_at_diagnosis,iss_stage,cytogenetic_risk,del_17p,t_4_14,t_14_16,gain_1q,ldh_elevated,prior_lines_of_therapy,resistance_label,resistance_type,timepoint,sample_type,notes
+# ──────────────────────────────────────────────────────────────────────────────
+# ResistanceMap Patient Manifest — MMRF CoMMpass + scRNA-seq Cohorts
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# INSTRUCTIONS:
+#   1. Populate from MMRF CoMMpass clinical tables (MMRF_CoMMpass_IA*.csv)
+#   2. Match patient_id to GDC case UUIDs for traceability
+#   3. Assign split (train/val/test) BEFORE any model training
+#   4. treatment_line: NDMM = newly diagnosed, RRMM = relapsed/refractory
+#   5. resistance_label: 0 = sensitive, 1 = resistant (see resistance_label_definition.md)
+#   6. resistance_type: primary = never responded, secondary = responded then relapsed
+#   7. cytogenetic_risk: standard | high (per IMWG criteria)
+#   8. ancestry: self-reported, per MMRF enrollment form
+#
+# REQUIRED for Tier A eval_data_adequacy:
+#   - treatment_line, sample_site, resistance_label, resistance_type
+# REQUIRED for Tier A eval_bias_fairness_shift:
+#   - ancestry, sex, age_at_diagnosis, cytogenetic_risk, iss_stage
+# REQUIRED for leakage scan:
+#   - split column with train/val/test assignments
+#
+# EXAMPLE ROWS (replace with real CoMMpass data):
+MMRF_0001,train,NDMM,bone_marrow,White,Male,67,II,standard,0,0,0,0,0,0,0,sensitive,baseline,bulk_rna,
+MMRF_0002,train,RRMM,bone_marrow,Black,Female,58,III,high,1,0,0,1,1,3,1,secondary,relapse,bulk_rna,
+MMRF_0003,val,NDMM,bone_marrow,White,Male,72,I,standard,0,0,0,0,0,0,0,sensitive,baseline,bulk_rna,
+MMRF_0004,test,RRMM,bone_marrow,Hispanic,Female,61,II,high,0,1,0,1,0,2,1,primary,post_treatment,bulk_rna,
+MMRF_0005,test,NDMM,peripheral_blood,Asian,Male,55,I,standard,0,0,0,0,0,0,0,sensitive,baseline,scrna,
