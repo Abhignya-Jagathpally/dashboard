@@ -27,7 +27,7 @@ export const subAgents = [
     id: 'biorender',
     name: 'BioRender',
     tagline: 'Cellular & molecular illustrations',
-    status: 'connected',
+    status: 'pending',
     mcpUrl: 'https://mcp.services.biorender.com/mcp',
     purpose:
       'Generate publication-quality figures for communicating resistance mechanisms. Given a mechanism (e.g., BCL-2 family rewiring at the mitochondrial outer membrane), the agent searches BioRender\u2019s curated icon + template libraries and assembles a labelled illustration.',
@@ -50,7 +50,7 @@ export const subAgents = [
     id: 'synapse',
     name: 'Synapse.org',
     tagline: 'Cohort discovery & provenance',
-    status: 'connected',
+    status: 'pending',
     mcpUrl: 'https://mcp.synapse.org/mcp',
     purpose:
       'Resolve cohort metadata, access tiers, and provenance for any dataset used by the pipeline. Provides audit-trail evidence for every clinical claim: which patients, which samples, which consent scope.',
