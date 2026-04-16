@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav.jsx';
 import Home from './pages/Home.jsx';
 import Science from './pages/Science.jsx';
+import SubAgents from './pages/SubAgents.jsx';
 
 const App = () => (
   <div className="page">
@@ -9,6 +10,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/science" element={<Science />} />
+      <Route path="/sub-agents" element={<SubAgents />} />
       <Route
         path="*"
         element={
