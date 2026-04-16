@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+// Only prepend /dashboard/ on the production build (GitHub Pages).
+// In `npm run dev`, the site is served from the root — cleaner local dev.
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/dashboard/',
-});
+  base: command === 'build' ? '/dashboard/' : '/',
+}));
