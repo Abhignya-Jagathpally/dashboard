@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import DiagramPipeline from '../components/DiagramPipeline.jsx';
+import DiagramPipelineV2 from '../components/DiagramPipelineV2.jsx';
 import DiagramInterpretability from '../components/DiagramInterpretability.jsx';
 import DiagramGovernance from '../components/DiagramGovernance.jsx';
-import MindMap from '../components/MindMap.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
 import LockModal from '../components/LockModal.jsx';
 import DataSourceCard from '../components/DataSourceCard.jsx';
@@ -14,65 +13,54 @@ import { pipelineStages } from '../data/pipeline.js';
 import { dataSources } from '../data/dataSources.js';
 import { interpretabilitySignals } from '../data/interpretability.js';
 import { governanceTiers } from '../data/governance.js';
-import { modelSpecs, qualityChecks } from '../data/modelSpecs.js';
-import { inferenceEndpoints } from '../data/api.js';
-import { systemPillars } from '../data/systemPillars.js';
 
 const Home = () => {
   const [activeLock, setActiveLock] = useState(null);
 
   return (
     <>
+      {/* ── Hero ── */}
       <section id="overview" className="hero">
         <div className="hero-card reveal">
-          <h2>Explainable resistance forecasting for hematologic malignancies.</h2>
+          <h2>Explainable resistance forecasting for hematologic malignancies</h2>
           <p>
-            ResistanceMap fuses proteomics, epigenomics, single-cell transcriptomics, and clinical
-            outcomes to forecast drug resistance while surfacing mechanistic evidence trails. The
-            pipeline is fully agentic, audited, and designed for interpretability-first decision
+            ResistanceMap introduces a layered agentic architecture that fuses four
+            complementary omics modalities with protein-protein interaction networks to
+            produce calibrated, horizon-specific resistance forecasts. Every prediction
+            is accompanied by mechanistic evidence trails and undergoes multi-tier
+            governance validation, enabling interpretability-first clinical decision
             support.
           </p>
           <div className="hero-metrics">
             <div className="metric">
-              <h3>10-agent DAG</h3>
-              <span>Layered execution + hash-chain verification</span>
+              <h3>10 agents</h3>
+              <span>Layered DAG with hash-chain verification</span>
             </div>
             <div className="metric">
-              <h3>3/6/12 month</h3>
-              <span>ODE-calibrated resistance horizons</span>
+              <h3>4 modalities</h3>
+              <span>Proteomics · Epigenomics · Transcriptomics · PPI</span>
             </div>
             <div className="metric">
-              <h3>Latest run</h3>
-              <span>21.3 min · test MSE 0.7191 · 11 drugs</span>
+              <h3>3 horizons</h3>
+              <span>Calibrated forecasts at 3, 6, 12 months</span>
             </div>
           </div>
           <div className="hero-cta">
             <Link to="/science" className="cta-primary">
-              Read the full methodology →
+              Explore the methodology &rarr;
             </Link>
-          </div>
-        </div>
-
-        <div className="hero-card reveal reveal--delayed">
-          <span className="pill">System Pillars</span>
-          <div className="card-grid card-grid--tight">
-            {systemPillars.map((pillar) => (
-              <div className="card" key={pillar.id}>
-                <h4>{pillar.title}</h4>
-                <p>{pillar.body}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
 
-      <section className="section" id="pipeline">
+      {/* ── Architecture Overview ── */}
+      <section className="section" id="architecture">
         <SectionHeader
-          title="Full Pipeline Blueprint"
-          subtitle="Each stage is independently verified, checkpointed, and parallelized. The DAG surfaces the complete model lineage from raw multi-omics to calibrated resistance landscapes."
+          title="Architecture Overview"
+          subtitle="A directed acyclic graph of 10 specialised agents transforms raw multi-omics inputs into calibrated resistance landscapes. Each node is independently checkpointed, hash-verified, and designed for reproducibility across pipeline executions."
         />
         <div className="diagram reveal">
-          <DiagramPipeline />
+          <DiagramPipelineV2 />
         </div>
         <div className="flow">
           {pipelineStages.map((stage) => (
@@ -82,45 +70,12 @@ const Home = () => {
               </strong>
               <div className="meta">{stage.inputs}</div>
               <div className="meta">{stage.outputs}</div>
-              <div className="meta meta--small">{stage.notes}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="section">
-        <SectionHeader
-          title="Model Specifications"
-          subtitle="Key hyperparameters and architectural commitments extracted from the configuration and training docs."
-        />
-        <div className="card-grid">
-          {modelSpecs.map((spec) => (
-            <div className="card" key={spec.id}>
-              <h4>{spec.label}</h4>
-              <p>{spec.value}</p>
-            </div>
-          ))}
-        </div>
-        <div className="grid-two grid-two--spaced">
-          <div className="card">
-            <span className="pill">Data Quality</span>
-            <ul className="bulleted">
-              {qualityChecks.map((check) => (
-                <li key={check.id}>{check.text}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="card">
-            <span className="pill">Observability</span>
-            <p>
-              AgentOps tracking captures duration, handoff latency, tool latency, and cost per
-              request. Timing logs and verification chains are exported for audit-ready
-              reproducibility.
-            </p>
-          </div>
-        </div>
-      </section>
-
+      {/* ── Interpretability ── */}
       <section className="section" id="interpretability">
         <SectionHeader
           title="Interpretable Prediction Process"
@@ -150,16 +105,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="section">
-        <SectionHeader
-          title="Mind Map of the System"
-          subtitle="A structural overview tying together data, models, orchestration, inference, and evaluation governance."
-        />
-        <div className="diagram reveal">
-          <MindMap />
-        </div>
-      </section>
-
+      {/* ── Evaluation Governance ── */}
       <section className="section" id="governance">
         <SectionHeader
           title="Evaluation Governance"
@@ -191,12 +137,12 @@ const Home = () => {
         </div>
       </section>
 
+      {/* ── Data Sources ── */}
       <section className="section" id="data">
         <SectionHeader
-          title="Data & Credential Access"
+          title="Data Sources"
           subtitle="Public data is fully integrated out of the box. Controlled datasets prompt for credentials before downloading or enrichment. Click any locked source to surface the access prompt."
           badges={[
-            { id: 'mcp', label: 'MCP connectors' },
             { id: 'irb', label: 'IRB-aware' },
           ]}
         />
@@ -204,60 +150,6 @@ const Home = () => {
           {dataSources.map((source) => (
             <DataSourceCard key={source.id} source={source} onLockClick={setActiveLock} />
           ))}
-        </div>
-      </section>
-
-      <section className="section" id="api">
-        <SectionHeader
-          title="Inference API"
-          subtitle="FastAPI endpoints deliver resistance state, trajectory, and intervention targets with confidence and interpretation attached to each response."
-        />
-        <div className="card-grid">
-          {inferenceEndpoints.map((endpoint) => (
-            <div className="card" key={endpoint.id}>
-              <h4>
-                <span className={`method method--${endpoint.method.toLowerCase()}`}>
-                  {endpoint.method}
-                </span>
-                <code>{endpoint.path}</code>
-              </h4>
-              <p>{endpoint.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section" id="sub-agents-teaser">
-        <SectionHeader
-          title="Sub-agent integrations"
-          subtitle="Three specialised agents plug into the main DAG: BioRender for mechanism illustrations, Synapse for cohort provenance, Wolfram Mathematica for stability analysis."
-          badges={[
-            { id: 'br', label: 'BioRender' },
-            { id: 'sy', label: 'Synapse.org' },
-            { id: 'wm', label: 'Mathematica' },
-          ]}
-        />
-        <div className="card-grid">
-          <div className="card">
-            <span className="pill">BioRender</span>
-            <h4>Cellular & molecular illustrations</h4>
-            <p>Per-prediction mechanism figures generated via the BioRender MCP. Consumes Landscape top-target output.</p>
-          </div>
-          <div className="card">
-            <span className="pill">Synapse.org</span>
-            <h4>Cohort discovery & provenance</h4>
-            <p>Provenance receipts at Layer 0 Data Validation enter the SHA256 hash chain alongside zero-trust checks.</p>
-          </div>
-          <div className="card">
-            <span className="pill">Mathematica</span>
-            <h4>Dynamical systems analysis</h4>
-            <p>Symbolic certificates for the Neural ODE — fixed points, Lyapunov exponents, Kramers escape rates.</p>
-          </div>
-        </div>
-        <div className="hero-cta" style={{ marginTop: 18 }}>
-          <Link to="/sub-agents" className="cta-primary">
-            See the venetoclax case study →
-          </Link>
         </div>
       </section>
 

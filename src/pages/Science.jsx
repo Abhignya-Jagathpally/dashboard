@@ -46,10 +46,9 @@ const Science = () => (
       <div className="science-toc" aria-label="Contents">
         <a href="#purpose">Purpose</a>
         <a href="#background">Background</a>
-        <a href="#different">What&apos;s different</a>
+        <a href="#contributions">Contributions</a>
         <a href="#pipeline">Pipeline</a>
         <a href="#components">Model components</a>
-        <a href="#methods">Methodology</a>
         <a href="#data">Data</a>
         <a href="#results">Results</a>
         <a href="#ablations">Ablations</a>
@@ -94,10 +93,10 @@ const Science = () => (
       </div>
     </section>
 
-    {/* ---- What's different ---- */}
-    <section id="different" className="sci-section">
+    {/* ---- Contributions ---- */}
+    <section id="contributions" className="sci-section">
       <SectionHeader
-        title="What makes ResistanceMap different"
+        title="Contributions"
         subtitle="Five design choices that together distinguish this system from prior pharmacogenomic ML."
       />
       <div className="card-grid">
@@ -127,6 +126,37 @@ const Science = () => (
         title="Model components"
         subtitle="One subsection per learnable module. Architecture, governing equations, and output contracts."
       />
+
+      {/* Data preparation and training methodology, integrated into components */}
+      <div className="grid-two" style={{ marginBottom: 24 }}>
+        <div className="card">
+          <span className="pill">Data preparation</span>
+          <p>
+            <strong>Splits.</strong> {methodology.data.splits}
+          </p>
+          <ul className="bulleted">
+            {methodology.data.preprocessing.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="card">
+          <span className="pill">Training</span>
+          <dl className="training-dl">
+            <dt>VAE</dt>
+            <dd>Pan-cancer pretraining on CCLE, hematologic fine-tuning, AdamW with cosine decay and {'\u03B2'}-annealing.</dd>
+            <dt>Trajectory (ODE)</dt>
+            <dd>Per-drug fitting via Dopri5 adaptive-step solver with clinical calendar-time calibration from paired cross-sectional and longitudinal samples.</dd>
+            <dt>ProteinNet GNN</dt>
+            <dd>3-layer GAT with 4 attention heads on the 7,853-protein MM subnet; mini-batch sampling with DropEdge regularization.</dd>
+            <dt>Fusion</dt>
+            <dd>Cross-attention training with modality dropout for missingness robustness.</dd>
+            <dt>Landscape</dt>
+            <dd>MLP head trained jointly with fusion; evidential loss when the uncertainty quantification head is enabled.</dd>
+          </dl>
+        </div>
+      </div>
+
       <div className="components-list">
         {modelComponents.map((c) => (
           <div className="component" key={c.id}>
@@ -134,7 +164,6 @@ const Science = () => (
               <span className="component-layer">{c.layer}</span>
               <div>
                 <h3>{c.title}</h3>
-                <code className="component-file">{c.file}</code>
               </div>
             </div>
             <p>
@@ -162,50 +191,6 @@ const Science = () => (
             </div>
           </div>
         ))}
-      </div>
-    </section>
-
-    {/* ---- Methodology ---- */}
-    <section id="methods" className="sci-section">
-      <SectionHeader
-        title="Methodology"
-        subtitle="Data preparation, training regimen, and infrastructure."
-      />
-      <div className="grid-two">
-        <div className="card">
-          <span className="pill">Data preparation</span>
-          <p>
-            <strong>Splits.</strong> {methodology.data.splits}
-          </p>
-          <ul className="bulleted">
-            {methodology.data.preprocessing.map((p) => (
-              <li key={p}>{p}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="card">
-          <span className="pill">Training</span>
-          <dl className="training-dl">
-            <dt>VAE</dt>
-            <dd>{methodology.training.vae}</dd>
-            <dt>Trajectory (ODE)</dt>
-            <dd>{methodology.training.traj}</dd>
-            <dt>ProteinNet GNN</dt>
-            <dd>{methodology.training.gnn}</dd>
-            <dt>Fusion</dt>
-            <dd>{methodology.training.fusion}</dd>
-            <dt>Landscape</dt>
-            <dd>{methodology.training.landscape}</dd>
-          </dl>
-        </div>
-      </div>
-      <div className="card" style={{ marginTop: 18 }}>
-        <span className="pill">Infrastructure</span>
-        <ul className="bulleted">
-          {methodology.infra.map((i) => (
-            <li key={i}>{i}</li>
-          ))}
-        </ul>
       </div>
     </section>
 
@@ -285,12 +270,6 @@ const Science = () => (
           </tbody>
         </table>
       </div>
-      <p className="meta" style={{ marginTop: 12 }}>
-        Latest orchestrated run <code>{results.latestRun.runId}</code>: {results.latestRun.wallTime}
-        {' · '}test MSE {results.latestRun.testMse}
-        {' · '}
-        {results.latestRun.samples} samples across {results.latestRun.drugs} drugs.
-      </p>
 
       <h4 style={{ marginTop: 32 }}>Baselines</h4>
       <div className="sci-table-wrap">

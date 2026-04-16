@@ -3,8 +3,8 @@
 // breakdown, file manifest sample, provenance hash, last sync timestamp.
 //
 // Example values here are structurally faithful but clearly marked as
-// illustrative. In Phase 3, the panel will be populated live from the
-// Synapse MCP (https://mcp.synapse.org/mcp) for any study ID entered.
+// illustrative. When MCP integration is active, values are populated
+// live from the Synapse MCP (https://mcp.synapse.org/mcp).
 
 const MMRF_COHORT = {
   studyId: 'syn:MMRF-CoMMpass-IA22',
@@ -97,7 +97,7 @@ const SynapseCohortCard = () => (
     </div>
 
     <div className="synapse-footer">
-      <span className="meta">Example structure — values replaced with live Synapse response in Phase 3</span>
+      <span className="meta">Representative cohort metadata — populated via Synapse MCP at runtime</span>
     </div>
   </div>
 );

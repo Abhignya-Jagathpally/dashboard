@@ -47,7 +47,12 @@ const App = () => (
           element={
             <section className="section">
               <h3 className="section-title">Not found</h3>
-              <p className="section-subtitle">The page you requested doesn&apos;t exist.</p>
+              <p className="section-subtitle">
+                The page you requested doesn&apos;t exist. Return to the{' '}
+                <a href="/">Dashboard</a>, explore the{' '}
+                <a href="/science">Methodology</a>, or view the{' '}
+                <a href="/sub-agents">Case Study</a>.
+              </p>
             </section>
           }
         />
@@ -55,7 +60,16 @@ const App = () => (
     </ErrorBoundary>
     <footer className="footer">
       <div>ResistanceMap · Abhignya Jagathpally · PhD Candidate</div>
-      <div>Multi-modal pharmacogenomic resistance forecasting</div>
+      <div>Multi-modal pharmacogenomic resistance forecasting for hematologic malignancies</div>
+      <div>
+        <a
+          href="https://github.com/resistancemap"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
     </footer>
   </div>
 );
