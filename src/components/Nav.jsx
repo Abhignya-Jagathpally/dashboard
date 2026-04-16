@@ -1,6 +1,5 @@
 import { NavLink, Link, useLocation } from 'react-router-dom';
 
-// Anchor links only make sense on the Home page; route links always.
 const HOME_ANCHORS = [
   { href: '#overview', label: 'Overview' },
   { href: '#pipeline', label: 'Pipeline' },
@@ -37,6 +36,12 @@ const Nav = () => {
           className={({ isActive }) => `nav-route${isActive ? ' nav-route--active' : ''}`}
         >
           Science
+        </NavLink>
+        <NavLink
+          to="/sub-agents"
+          className={({ isActive }) => `nav-route${isActive ? ' nav-route--active' : ''}`}
+        >
+          Sub-agents
         </NavLink>
 
         {!onHome && (
