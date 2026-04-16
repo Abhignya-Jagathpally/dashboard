@@ -227,6 +227,40 @@ const Home = () => {
         </div>
       </section>
 
+      <section className="section" id="sub-agents-teaser">
+        <SectionHeader
+          title="Sub-agent integrations"
+          subtitle="Three specialised agents plug into the main DAG: BioRender for mechanism illustrations, Synapse for cohort provenance, Wolfram Mathematica for stability analysis."
+          badges={[
+            { id: 'br', label: 'BioRender' },
+            { id: 'sy', label: 'Synapse.org' },
+            { id: 'wm', label: 'Mathematica' },
+          ]}
+        />
+        <div className="card-grid">
+          <div className="card">
+            <span className="pill">BioRender</span>
+            <h4>Cellular & molecular illustrations</h4>
+            <p>Per-prediction mechanism figures generated via the BioRender MCP. Consumes Landscape top-target output.</p>
+          </div>
+          <div className="card">
+            <span className="pill">Synapse.org</span>
+            <h4>Cohort discovery & provenance</h4>
+            <p>Provenance receipts at Layer 0 Data Validation enter the SHA256 hash chain alongside zero-trust checks.</p>
+          </div>
+          <div className="card">
+            <span className="pill">Mathematica</span>
+            <h4>Dynamical systems analysis</h4>
+            <p>Symbolic certificates for the Neural ODE — fixed points, Lyapunov exponents, Kramers escape rates.</p>
+          </div>
+        </div>
+        <div className="hero-cta" style={{ marginTop: 18 }}>
+          <Link to="/sub-agents" className="cta-primary">
+            See the venetoclax case study →
+          </Link>
+        </div>
+      </section>
+
       {activeLock && <LockModal source={activeLock} onClose={() => setActiveLock(null)} />}
     </>
   );
