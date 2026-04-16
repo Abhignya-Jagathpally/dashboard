@@ -1,5 +1,5 @@
-// All content below is drawn from the ResistanceMap v3 repository
-// (https://github.com/Abhignya-Jagathpally/temp/tree/v3/ResistanceMap).
+// All content below is drawn from the ResistanceMap v5 repository
+// (https://github.com/Abhignya-Jagathpally/temp/tree/v5/ResistanceMap).
 // Results table, hyperparameters, and dataset sizes are from the repo's
 // README.md, ARCHITECTURE.md, and configs/default.yaml.
 
@@ -52,7 +52,7 @@ export const differentiators = [
   {
     id: 'agentic-dag',
     title: 'Fully agentic execution',
-    body: 'The pipeline is a 10-agent DAG (Data Validation → Data Prep → VAE/ESM-2 parallel → VAE Finetune → Trajectory/ProteinNet parallel → Fusion → Landscape → Validation) with parallel scheduling yielding 1.33–4× wall-clock speedup over sequential execution.',
+    body: 'The pipeline is a 10-agent DAG (Data Validation → Data Prep → VAE/ESM-2 parallel → VAE Finetune → Trajectory → ProteinNet → Fusion → Landscape → Validation) with parallel scheduling yielding 1.33–4× wall-clock speedup over sequential execution.',
   },
   {
     id: 'zero-trust',
@@ -72,7 +72,7 @@ export const differentiators = [
   {
     id: 'math',
     title: 'First-principles math as reality check',
-    body: 'Fano\u2019s inequality bounds the best achievable classification error given mutual information. Lyapunov stability analysis and Kramers escape rate bound the credibility of basin-transition predictions. These external constraints make the pipeline falsifiable, not just predictive.',
+    body: 'Lyapunov stability analysis and bistability scoring are implemented in the v5 code as runtime reality checks on basin-transition predictions. Fano\u2019s inequality and Kramers escape rate are theoretical anchors cited in the design but not yet computed in code. These external constraints make the pipeline falsifiable, not just predictive.',
   },
 ];
 
@@ -85,8 +85,8 @@ export const modelComponents = [
     purpose:
       'Learn a 64-dimensional latent resistance manifold from proteomics conditioned on epigenomic context. Pan-cancer pretraining (200 epochs on ~1000 CCLE lines) then hematology-specific finetuning (100 epochs on ~100 lines).',
     architecture: [
-      'Encoder: 8192-dim input → 4× linear+SELU blocks → μ, σ (64D)',
-      'Decoder: 64D latent → 4× linear+SELU blocks → 50,000-dim epigenome prediction',
+      'Encoder: 8000-dim input → 3× linear+GELU blocks (2048→1024→512) → μ, σ (64D)',
+      'Decoder: 64D latent → 3× linear+GELU blocks (512→1024→2048) → 50,000-dim epigenome prediction',
       'ELBO loss with β-annealing; conditioning vector injected at each layer',
     ],
     math: '\u2112 = \u2212\ud835\udd3c_{q_\u03c6(z|x,c)}[log p_\u03b8(x|z,c)] + \u03b2\u00b7KL(q_\u03c6(z|x,c) \u2016 p(z))',
@@ -113,11 +113,11 @@ export const modelComponents = [
     title: 'ESM-2 + Protein Network GNN',
     file: 'resistancemap/models/protein_network.py (935 lines)',
     purpose:
-      'Reason over the STRING PPI v12 network (19,566 proteins, 930k directed edges after ENSP→gene mapping, 7,853-protein MM subnet) using ESM-2 1280-D embeddings as node features. Graph attention (4 layers, 8 heads) surfaces per-protein resistance signals and pathway-level evidence.',
+      'Reason over the STRING PPI v12 network (19,566 proteins, 930k directed edges after ENSP→gene mapping, 7,853-protein MM subnet) using ESM-2 1280-D embeddings as node features. Graph attention (3 layers, 4 heads, 256 hidden) surfaces per-protein resistance signals and pathway-level evidence.',
     architecture: [
-      'Node features: ESM-2 esm2_t33_650M_UR50D (1280D per protein)',
+      'Node features: ESM-2 esm2_t33_650M_UR50D (1280D per protein); bottleneck 1280→256',
       'Graph: STRING v12 filtered at combined_score ≥ 0.7; degree-preserving rewired null for attribution debiasing',
-      'Message passing: 4-layer GAT, 8 heads, GraphMASK-ready for causal edge attribution',
+      'Message passing: 3-layer GAT, 4 heads, 256 hidden; DropEdge, PairNorm, JumpingKnowledge (cat); GraphMASK-ready for causal edge attribution',
     ],
     math: 'h_i^{(l+1)} = \u03c3(\u2211_{j \u2208 \ud835\udca9(i)} \u03b1_{ij}^{(l)} W^{(l)} h_j^{(l)})',
     output: 'Per-protein resistance score + pathway attribution (top 20 targets at threshold 0.8)',
@@ -128,14 +128,14 @@ export const modelComponents = [
     title: 'Cross-Attention Fusion',
     file: 'resistancemap/models/fusion.py (741 lines)',
     purpose:
-      'Combine evidence from VAE (latent state), Trajectory (stability), ProteinNet (pathway signals), and optional clinical covariates into a unified 256-D resistance embedding. Modality gating handles missingness gracefully.',
+      'Combine evidence from VAE (latent state), Trajectory (stability), ProteinNet (pathway signals), and optional clinical covariates into a unified 128-D resistance embedding. Modality gating handles missingness gracefully.',
     architecture: [
       'Query/Key/Value: modality × sample → 4-head cross-attention',
-      'Hidden dim 256; residual + layer-norm per block',
+      'Hidden dim 128; output 128-D; residual + layer-norm per block',
       'Modality dropout for missingness robustness',
     ],
     math: 'Attention(Q,K,V) = softmax(QK\u1d40 / \u221ad_k) V — applied across modalities, not sequence positions',
-    output: 'Unified 256-D resistance embedding per (sample, drug) pair',
+    output: 'Unified 128-D resistance embedding per (sample, drug) pair',
   },
   {
     id: 'l5-landscape',
@@ -145,11 +145,11 @@ export const modelComponents = [
     purpose:
       'Map fused embeddings to interpretable outputs: drug-specific resistance probability, cellular state classification, and top intervention targets. Optional evidential head produces epistemic + aleatoric uncertainty.',
     architecture: [
-      'MLP head: 256 → 128 → 64 → {drug risk, state logits, target scores}',
-      'Evidential uncertainty (Normal-Inverse-Gamma) as optional head',
-      'Bistability module scores basin transitions (Kramers escape rate)',
+      'MLP head: 128 → 128 → 64 → {drug risk, state logits, target scores}',
+      'Evidential uncertainty (Dirichlet: α = softplus(logits)+1, epistemic = K/Σα) as optional head',
+      'Bistability scoring (basin depth + drift)',
     ],
-    math: 'p(resistant | x, drug) = \u03c3(W\u00b7h_fused + b); evidence \u03bd, \u03b1, \u03b2 for UQ',
+    math: 'p(resistant | x, drug) = \u03c3(W\u00b7h_fused + b); \u03b1 for Dirichlet UQ',
     output: 'Drug risk score + state class + ranked targets + calibrated uncertainty',
   },
   {
@@ -180,16 +180,16 @@ export const methodology = {
     ],
   },
   training: {
-    vae: 'Pretrain 200 epochs (CCLE, ~1000 lines), batch=1024, AdamW lr=1e-3 cosine decay, β-annealing 0→1. Finetune 100 epochs on hematologic subset.',
+    vae: 'Pretrain 200 epochs (CCLE, ~1000 lines), batch=512, AdamW lr=1e-3 cosine decay, β-annealing 0→1. Finetune 100 epochs on hematologic subset.',
     traj:
       'ODE fit per drug: 500 epochs, dopri5 solver, rtol=1e-5, atol=1e-7. Clinical calendar calibration via paired cross-sectional + longitudinal samples.',
-    gnn: '4-layer GAT, 8 heads, dropout 0.3, 50 epochs, mini-batch sampling on 7,853-protein MM subnet.',
-    fusion: 'Cross-attention training 100 epochs, batch=512, modality dropout 0.1.',
+    gnn: '3-layer GAT, 4 heads, 256 hidden, dropout 0.2, 50 epochs, mini-batch sampling on 7,853-protein MM subnet.',
+    fusion: 'Cross-attention training 150 epochs, batch=512, modality dropout 0.1.',
     landscape: 'MLP head trained jointly with fusion; evidential loss when UQ head enabled.',
   },
   infra: [
     'Single H100 total training time: ~27 hours. 8× H100 distributed: ~4 hours.',
-    'bfloat16 native; torch.compile for fused kernels; DataLoader num_workers=16.',
+    'bfloat16 native; torch.compile for fused kernels; DataLoader num_workers=8.',
     'Each stage is checkpoint-aware and skipped if the checkpoint is hash-valid.',
     'Docker image + docker-compose for reproducibility; MLflow profile for experiment tracking.',
   ],
@@ -289,7 +289,7 @@ export const limitations = [
     id: 'uq',
     title: 'Uncertainty is bounded, not perfect',
     body:
-      'Evidential UQ produces well-calibrated aleatoric + epistemic estimates on in-distribution data. Fano\u2019s inequality provides a lower bound on achievable error; actual performance may exceed this bound only under assumption violations we cannot detect.',
+      'Evidential UQ produces well-calibrated aleatoric + epistemic estimates on in-distribution data. Fano\u2019s inequality is a theoretical anchor cited in the design (lower bound on achievable error) but is not yet computed in code; actual performance bounds rely on the implemented Dirichlet calibration.',
   },
 ];
 
@@ -297,7 +297,7 @@ export const takeaways = [
   'Multi-modal fusion lifts AUROC 0.82 → 0.89 and MAE 0.18 → 0.09 over single-modality baselines — the modalities are complementary, not redundant.',
   'Agentic DAG + zero-trust hash chains make every prediction auditable down to the intermediate tensor. This is what makes the pipeline deployable in a clinical-safety context, not just a benchmark.',
   'Orthogonal evaluation governance (Tier A–D) catches failure modes that training-time metrics miss — ODE calendar-time calibration, PPI degree confounds, missing OOD detection were all surfaced by Tier B/C audits before reaching downstream users.',
-  'First-principles math constraints (Fano, Lyapunov, Kramers) turn the system from "predictive black box" into "falsifiable model with external anchors".',
+  'Lyapunov stability analysis and bistability scoring are implemented as runtime reality checks; Fano\u2019s inequality and Kramers escape rate remain future theoretical anchors to be computed in code.',
 ];
 
 export const references = [
