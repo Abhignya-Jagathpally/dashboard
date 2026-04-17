@@ -19,13 +19,13 @@ export const background = [
   {
     id: 'omics-ml',
     heading: 'Pharmacogenomic ML',
-    body: 'Prior work has treated proteomics, transcriptomics, and drug response as separate modalities, with single-modality predictors (DeepCDR, MOLI, DeepSurv) achieving AUROC 0.75–0.82 on cell-line panels. Multi-modal fusion has been limited to late concatenation or simple attention, missing pathway-level evidence.',
+    body: 'Existing pharmacogenomic models treat proteomics, transcriptomics, and drug-response readouts as independent modalities. Single-modality architectures such as DeepCDR and DeepSurv achieve AUROC values of 0.75–0.82 on cell-line panels, yet multi-modal integration has remained limited to late concatenation or shallow attention, forfeiting the pathway-level evidence that could ground predictions in biological mechanism.',
     citations: ['liu2020deepcdr', 'katzman2018deepsurv'],
   },
   {
     id: 'protein-lm',
     heading: 'Protein language models',
-    body: 'ESM-2 (650M) produces 1280-dimensional per-residue embeddings that capture structural and functional information without supervised training. These embeddings seed graph neural networks over STRING PPI v12 (19,566 proteins, 11.9M interactions) to reason over pathway-level resistance signals.',
+    body: 'The ESM-2 protein language model (650M parameters) produces 1,280-dimensional per-residue embeddings encoding structural and functional properties without task-specific supervision. ResistanceMap leverages these representations as node features in a graph attention network operating over the STRING PPI v12 interactome (19,566 proteins; 11.9M interactions), enabling pathway-level reasoning about resistance-associated signalling rewiring.',
     citations: ['lin2023esm2', 'szklarczyk2023string'],
   },
   {
@@ -43,7 +43,7 @@ export const background = [
   {
     id: 'agentic',
     heading: 'Agentic ML pipelines',
-    body: 'Recent work has treated ML pipelines as orchestrated DAGs of specialized agents. ResistanceMap is one of the first to apply this pattern to biomedical modeling, with zero-trust (SHA256 hash chain) verification at every agent boundary and an orthogonal multi-tier evaluation governance layer.',
+    body: 'Agentic ML pipelines decompose complex workflows into orchestrated directed acyclic graphs of specialized agents. ResistanceMap applies this paradigm to biomedical modelling with zero-trust verification — a SHA-256 hash chain at every agent boundary — and an orthogonal multi-tier evaluation governance layer that adjudicates claims independently of training.',
     citations: [],
   },
 ];
@@ -52,7 +52,7 @@ export const differentiators = [
   {
     id: 'agentic-dag',
     title: 'Fully agentic execution',
-    body: 'The pipeline is a 10-agent DAG (Data Validation → Data Prep → VAE/ESM-2 parallel → VAE Finetune → Trajectory → ProteinNet → Fusion → Landscape → Validation) with parallel scheduling yielding 1.33–4× wall-clock speedup over sequential execution.',
+    body: 'The pipeline decomposes resistance forecasting into a directed acyclic graph of specialised agents — spanning data validation, representation learning, temporal dynamics, network analysis, multi-modal fusion, and landscape prediction — with dependency-aware parallel scheduling. Cryptographic hash-chain verification at every agent boundary ensures full provenance and reproducibility.',
   },
   {
     id: 'zero-trust',
@@ -62,7 +62,7 @@ export const differentiators = [
   {
     id: 'cross-modal',
     title: 'Mechanistic cross-modal fusion',
-    body: 'Cross-attention fusion (4 modalities × 4 heads) weights each modality per-sample, producing attention maps that directly explain which evidence drove each prediction. Pathway-level audits re-check these attributions under PPI edge dropout.',
+    body: 'A four-head cross-attention mechanism fuses epigenomic latent states, temporal trajectories, protein-network signals, and stability scores into a unified 128-dimensional resistance embedding. Per-sample modality attention weights provide intrinsic interpretability, while pathway-level audits under PPI edge dropout verify attribution stability.',
   },
   {
     id: 'governance',

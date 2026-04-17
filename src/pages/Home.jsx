@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import DiagramPipelineV2 from '../components/DiagramPipelineV2.jsx';
 import DiagramInterpretability from '../components/DiagramInterpretability.jsx';
 import DiagramGovernance from '../components/DiagramGovernance.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
@@ -9,7 +8,6 @@ import LockModal from '../components/LockModal.jsx';
 import DataSourceCard from '../components/DataSourceCard.jsx';
 import EvalGovernancePanel from '../components/EvalGovernancePanel.jsx';
 
-import { pipelineStages } from '../data/pipeline.js';
 import { dataSources } from '../data/dataSources.js';
 import { interpretabilitySignals } from '../data/interpretability.js';
 import { governanceTiers } from '../data/governance.js';
@@ -24,25 +22,26 @@ const Home = () => {
         <div className="hero-card reveal">
           <h2>Explainable resistance forecasting for hematologic malignancies</h2>
           <p>
-            ResistanceMap introduces a layered agentic architecture that fuses four
-            complementary omics modalities with protein-protein interaction networks to
-            produce calibrated, horizon-specific resistance forecasts. Every prediction
-            is accompanied by mechanistic evidence trails and undergoes multi-tier
-            governance validation, enabling interpretability-first clinical decision
-            support.
+            ResistanceMap is a multi-modal pharmacogenomic pipeline that integrates
+            proteomic, epigenomic, single-cell transcriptomic, and protein–protein
+            interaction data to produce mechanistically interpretable drug-resistance
+            forecasts. An agentic execution architecture ensures reproducibility through
+            cryptographic verification at every intermediate stage, while a four-tier
+            evaluation governance layer adjudicates the epistemic validity of each
+            prediction before it reaches downstream consumers.
           </p>
           <div className="hero-metrics">
             <div className="metric">
-              <h3>10 agents</h3>
-              <span>Layered DAG with hash-chain verification</span>
+              <h3>Agentic orchestration</h3>
+              <span>Hash-verified DAG with zero-trust boundaries</span>
             </div>
             <div className="metric">
               <h3>4 modalities</h3>
-              <span>Proteomics · Epigenomics · Transcriptomics · PPI</span>
+              <span>Proteomics · Epigenomics · Transcriptomics · PPI networks</span>
             </div>
             <div className="metric">
-              <h3>3 horizons</h3>
-              <span>Calibrated forecasts at 3, 6, 12 months</span>
+              <h3>Calibrated forecasts</h3>
+              <span>Horizon-specific predictions at 3, 6, and 12 months</span>
             </div>
           </div>
           <div className="hero-cta">
@@ -50,28 +49,6 @@ const Home = () => {
               Explore the methodology &rarr;
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ── Architecture Overview ── */}
-      <section className="section" id="architecture">
-        <SectionHeader
-          title="Architecture Overview"
-          subtitle="A directed acyclic graph of 10 specialised agents transforms raw multi-omics inputs into calibrated resistance landscapes. Each node is independently checkpointed, hash-verified, and designed for reproducibility across pipeline executions."
-        />
-        <div className="diagram reveal">
-          <DiagramPipelineV2 />
-        </div>
-        <div className="flow">
-          {pipelineStages.map((stage) => (
-            <div className="flow-step" key={stage.id}>
-              <strong>
-                {stage.layer}: {stage.name}
-              </strong>
-              <div className="meta">{stage.inputs}</div>
-              <div className="meta">{stage.outputs}</div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -109,9 +86,8 @@ const Home = () => {
       <section className="section" id="governance">
         <SectionHeader
           title="Evaluation Governance"
-          subtitle="The governance layer runs orthogonally to training, adjudicating state, timing, and pathway claims with tiered agents, adversarial baselines, and verification chains. Live verdicts reflect the latest evaluation run."
+          subtitle="An orthogonal evaluation layer adjudicates data adequacy, architectural necessity, forecasting calibration, and clinical safety through tiered review with adversarial baselines."
           badges={[
-            { id: 'tv', label: 'Tiered verdicts' },
             { id: 'ab', label: 'Adversarial baselines' },
           ]}
         />
@@ -141,7 +117,7 @@ const Home = () => {
       <section className="section" id="data">
         <SectionHeader
           title="Data Sources"
-          subtitle="Public data is fully integrated out of the box. Controlled datasets prompt for credentials before downloading or enrichment. Click any locked source to surface the access prompt."
+          subtitle="Multi-omics datasets span cell-line encyclopedias, drug sensitivity screens, single-cell atlases, and clinical cohorts. Controlled-access datasets are annotated with their governance tier."
           badges={[
             { id: 'irb', label: 'IRB-aware' },
           ]}

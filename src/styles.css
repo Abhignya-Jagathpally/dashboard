@@ -34,10 +34,10 @@ body {
   font-family: var(--mono);
   color: var(--ink);
   background:
-    radial-gradient(1400px 900px at 10% -8%, rgba(213, 231, 227, 0.6) 0%, transparent 55%),
-    radial-gradient(1000px 800px at 95% -5%, rgba(232, 220, 201, 0.45) 0%, transparent 50%),
-    radial-gradient(800px 600px at 50% 80%, rgba(232, 244, 242, 0.3) 0%, transparent 50%),
-    linear-gradient(180deg, var(--gradient-start), var(--gradient-end) 40%, var(--bg-2));
+    radial-gradient(ellipse 1400px 900px at 10% -15%, rgba(44, 110, 106, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 1000px 800px at 95% 5%, rgba(197, 138, 43, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 800px 600px at 50% 80%, rgba(164, 73, 47, 0.04) 0%, transparent 50%),
+    linear-gradient(170deg, #f9f6f0 0%, #f0ece4 40%, #e8f0ed 100%);
   min-height: 100vh;
 }
 
@@ -153,7 +153,7 @@ a {
 }
 
 .hero-card {
-  background: var(--card);
+  background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,245,239,0.95));
   border: 1px solid var(--border);
   border-top: 2px solid transparent;
   border-image: linear-gradient(90deg, var(--accent), var(--accent-2)) 1;
@@ -244,6 +244,10 @@ a {
   font-size: 30px;
   margin: 0;
   letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-subtitle {
@@ -295,12 +299,8 @@ a {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card:hover::before {
   opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .card--interactive {
@@ -405,6 +405,7 @@ a {
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   background: rgba(197, 138, 43, 0.15);
@@ -886,7 +887,7 @@ a {
 }
 
 .science-hero {
-  background: var(--card);
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(232,244,242,0.9));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 40px;

@@ -77,14 +77,15 @@ const SubAgents = () => (
       <span className="pill">Case Study</span>
       <h2>Venetoclax resistance in relapsed/refractory multiple myeloma</h2>
       <p className="lede">
-        ResistanceMap combines graph-based causal inference with dynamical-systems
-        modeling to predict mechanistic drivers of drug resistance. In this case study,
-        the pipeline reconstructs BCL-2 family rewiring under venetoclax pressure,
-        identifying how MCL-1 and BCL-XL upregulation compensate for BCL-2 inhibition
-        in t(11;14)-enriched myeloma. Three specialized sub-agents augment the core
-        pipeline with domain expertise: BioRender for publication-quality mechanism
-        illustrations, Synapse for cohort provenance and data governance, and Wolfram
-        Mathematica for dynamical-systems phase-portrait analysis.
+        This case study demonstrates ResistanceMap's capacity for mechanistic resistance
+        prediction through the lens of venetoclax resistance in t(11;14)-enriched
+        relapsed/refractory multiple myeloma. The pipeline reconstructs BCL-2 family
+        rewiring dynamics — specifically, compensatory upregulation of MCL-1 and BCL-XL
+        in response to BCL-2 inhibition — by integrating graph-based pathway analysis
+        with dynamical-systems modelling. Three domain-specialised sub-agents augment
+        the core pipeline: BioRender for publication-quality mechanism illustration,
+        Synapse for cohort provenance and access governance, and Wolfram Mathematica
+        for symbolic stability analysis of the learned vector field.
       </p>
     </header>
 
@@ -129,8 +130,8 @@ const SubAgents = () => (
     {/* ---- Integration overview ---- */}
     <section className="sci-section" id="integration">
       <SectionHeader
-        title="Where each sub-agent plugs into the DAG"
-        subtitle="One integration point per agent, all on the critical path."
+        title="Sub-agent integration architecture"
+        subtitle="Each sub-agent connects to a specific pipeline stage, contributing domain expertise that the core architecture cannot provide independently."
       />
       <div className="integration-map">
         {integrationPoints.map((pt) => {
@@ -155,8 +156,8 @@ const SubAgents = () => (
     {/* ---- Individual sub-agents ---- */}
     <section className="sci-section">
       <SectionHeader
-        title="The three sub-agents"
-        subtitle="Each agent documented with purpose, I/O contract, pipeline role, example output, and case-study application."
+        title="Domain-specialised agents"
+        subtitle="Each agent is documented with its purpose, input–output contract, pipeline integration point, and a concrete application to the venetoclax resistance case study."
       />
       <div className="subagents-list">
         {subAgents.map((agent, idx) => (

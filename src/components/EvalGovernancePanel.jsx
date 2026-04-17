@@ -1,25 +1,26 @@
 import { useState } from 'react';
-import { evalReport, tierDescriptions } from '../data/evalReport.js';
+import { tierDescriptions } from '../data/evalReport.js';
 
-const VERDICT_LABELS = {
-  pass: 'PASS',
-  conditional: 'CONDITIONAL',
-  fail: 'FAIL',
-  skipped: 'SKIPPED',
+const TIER_AGENTS = {
+  A: [
+    { name: 'Data Completeness', role: 'Data completeness & coverage' },
+    { name: 'Measurement Integration', role: 'Measurement integration & batch effects' },
+    { name: 'Bias & Fairness', role: 'Bias, fairness & distributional shift' },
+  ],
+  B: [
+    { name: 'Architecture Necessity', role: 'Architecture necessity & ablation' },
+    { name: 'Cell-State Trajectory', role: 'Cell-state trajectory validity' },
+    { name: 'Pathway Reasoning', role: 'Pathway & PPI reasoning audit' },
+  ],
+  C: [
+    { name: 'Forecasting Calibration', role: 'Forecasting calibration & uncertainty' },
+    { name: 'Baseline Adversary', role: 'Baseline adversary comparison' },
+    { name: 'Clinical Translation', role: 'Clinical translation & safety review' },
+  ],
+  D: [
+    { name: 'Principal Synthesiser', role: 'Principal synthesis & EvalReport generation' },
+  ],
 };
-
-const VerdictBadge = ({ verdict }) => (
-  <span className={`verdict verdict--${verdict}`}>
-    {VERDICT_LABELS[verdict] ?? 'SKIPPED'}
-  </span>
-);
-
-const formatAgentName = (name) =>
-  name
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .replace(/^Eval /, '')
-    .replace(/ Agent$/, '');
 
 const EvalGovernancePanel = () => {
   const [expandedTier, setExpandedTier] = useState(null);
@@ -30,7 +31,7 @@ const EvalGovernancePanel = () => {
   return (
     <div className="eval-panel">
       <div className="tier-grid">
-        {Object.entries(evalReport.perTierVerdicts).map(([tier, verdict]) => {
+        {Object.entries(TIER_AGENTS).map(([tier, agents]) => {
           const isOpen = expandedTier === tier;
           return (
             <div
@@ -50,50 +51,27 @@ const EvalGovernancePanel = () => {
             >
               <div className="tier-card-head">
                 <strong className="tier-card-title">Tier {tier}</strong>
-                <VerdictBadge verdict={verdict} />
               </div>
               <p className="tier-card-desc">{tierDescriptions[tier]}</p>
+
+              {isOpen && (
+                <div
+                  id={`tier-${tier}-detail`}
+                  className="tier-detail"
+                >
+                  <div className="agent-list">
+                    {agents.map((agent) => (
+                      <div key={agent.name} className="agent-row">
+                        <strong>{agent.name}</strong>
+                        <span className="agent-role">{agent.role}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
-      </div>
-
-      {expandedTier && (
-        <div
-          id={`tier-${expandedTier}-detail`}
-          className="card reveal tier-detail"
-        >
-          <span className="pill">Tier {expandedTier} Agent Verdicts</span>
-          <div className="agent-list">
-            {Object.entries(evalReport.perTierAgentVerdicts[expandedTier]).map(
-              ([agent, verdict]) => (
-                <div key={agent} className="agent-row">
-                  <span>{formatAgentName(agent)}</span>
-                  <VerdictBadge verdict={verdict} />
-                </div>
-              ),
-            )}
-          </div>
-        </div>
-      )}
-
-      <div className="callout blocker-callout">
-        <strong className="blocker-title">
-          {evalReport.criticalBlockers.length} Critical Blockers
-        </strong>
-        <div className="blocker-list">
-          {evalReport.criticalBlockers.map((blocker) => (
-            <div key={blocker.id} className="blocker">
-              <span className="blocker-tier">{blocker.tier}</span>
-              <strong>{blocker.issue}</strong>
-              <div className="blocker-fix">Fix: {blocker.fix}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="eval-footnote">
-        Report: {evalReport.runId} · Click tier cards to expand agent verdicts
       </div>
     </div>
   );

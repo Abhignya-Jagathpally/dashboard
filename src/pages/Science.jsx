@@ -44,17 +44,17 @@ const Science = () => (
         resistance with mechanistic evidence and calibrated uncertainty.
       </p>
       <div className="science-toc" aria-label="Contents">
-        <a href="#purpose">Purpose</a>
-        <a href="#background">Background</a>
-        <a href="#contributions">Contributions</a>
-        <a href="#pipeline">Pipeline</a>
-        <a href="#components">Model components</a>
-        <a href="#data">Data</a>
-        <a href="#results">Results</a>
-        <a href="#ablations">Ablations</a>
-        <a href="#limitations">Limitations</a>
-        <a href="#takeaways">Takeaways</a>
-        <a href="#references">References</a>
+        <a href="#purpose" onClick={(e) => { e.preventDefault(); document.getElementById('purpose')?.scrollIntoView({ behavior: 'smooth' }); }}>Purpose</a>
+        <a href="#background" onClick={(e) => { e.preventDefault(); document.getElementById('background')?.scrollIntoView({ behavior: 'smooth' }); }}>Background</a>
+        <a href="#contributions" onClick={(e) => { e.preventDefault(); document.getElementById('contributions')?.scrollIntoView({ behavior: 'smooth' }); }}>Contributions</a>
+        <a href="#pipeline" onClick={(e) => { e.preventDefault(); document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); }}>Pipeline</a>
+        <a href="#components" onClick={(e) => { e.preventDefault(); document.getElementById('components')?.scrollIntoView({ behavior: 'smooth' }); }}>Model components</a>
+        <a href="#data" onClick={(e) => { e.preventDefault(); document.getElementById('data')?.scrollIntoView({ behavior: 'smooth' }); }}>Data</a>
+        <a href="#results" onClick={(e) => { e.preventDefault(); document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' }); }}>Results</a>
+        <a href="#ablations" onClick={(e) => { e.preventDefault(); document.getElementById('ablations')?.scrollIntoView({ behavior: 'smooth' }); }}>Ablations</a>
+        <a href="#limitations" onClick={(e) => { e.preventDefault(); document.getElementById('limitations')?.scrollIntoView({ behavior: 'smooth' }); }}>Limitations</a>
+        <a href="#takeaways" onClick={(e) => { e.preventDefault(); document.getElementById('takeaways')?.scrollIntoView({ behavior: 'smooth' }); }}>Takeaways</a>
+        <a href="#references" onClick={(e) => { e.preventDefault(); document.getElementById('references')?.scrollIntoView({ behavior: 'smooth' }); }}>References</a>
       </div>
     </header>
 
@@ -78,7 +78,7 @@ const Science = () => (
     <section id="background" className="sci-section">
       <SectionHeader
         title="Background & supporting literature"
-        subtitle="Where ResistanceMap sits in the landscape of prior work."
+        subtitle="Situating ResistanceMap within the landscape of pharmacogenomic ML, protein language models, neural dynamical systems, and agentic pipeline design."
       />
       <div className="card-grid">
         {background.map((b) => (
@@ -97,7 +97,7 @@ const Science = () => (
     <section id="contributions" className="sci-section">
       <SectionHeader
         title="Contributions"
-        subtitle="Five design choices that together distinguish this system from prior pharmacogenomic ML."
+        subtitle="Five architectural and methodological design choices that collectively distinguish ResistanceMap from prior pharmacogenomic prediction systems."
       />
       <div className="card-grid">
         {differentiators.map((d) => (
@@ -113,7 +113,7 @@ const Science = () => (
     <section id="pipeline" className="sci-section">
       <SectionHeader
         title="Pipeline overview"
-        subtitle="The full agentic execution DAG. 10 agents, parallel scheduling, zero-trust verification at every boundary."
+        subtitle="The agentic execution DAG orchestrates specialized agents with parallel scheduling and cryptographic verification at every boundary."
       />
       <div className="diagram reveal">
         <DiagramPipelineV2 />
@@ -124,7 +124,7 @@ const Science = () => (
     <section id="components" className="sci-section">
       <SectionHeader
         title="Model components"
-        subtitle="One subsection per learnable module. Architecture, governing equations, and output contracts."
+        subtitle="Each learnable module is documented with its architecture, governing equations, and output contract."
       />
 
       {/* Data preparation and training methodology, integrated into components */}
